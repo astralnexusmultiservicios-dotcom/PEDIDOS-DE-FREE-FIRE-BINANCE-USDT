@@ -288,7 +288,7 @@
             <div class="p-5 border-t border-blue-900/50 bg-gradient-to-r from-black to-slate-900 flex justify-between items-center">
                 <div>
                     <p class="text-[10px] text-slate-400 uppercase tracking-widest">Subtotal de la cuenta</p>
-                    <p class="text-xl font-black text-blue-400">C$ <span id="edit-total">0</span></p>
+                    <p class="text-xl font-black text-blue-400">$ <span id="edit-total">0</span></p>
                 </div>
                 <button onclick="saveEditOrder()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-colors shadow-[0_0_15px_rgba(59,130,246,0.4)]">
                     Guardar Cambios
@@ -414,7 +414,7 @@
                     <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"></div>
                     <div class="text-center sm:text-left relative z-10">
                         <p class="text-blue-300/60 text-xs font-bold uppercase tracking-widest mb-1">Subtotal de la Selección</p>
-                        <p class="text-4xl font-black text-white">C$ <span id="current-selection-total" class="text-blue-500">0</span></p>
+                        <p class="text-4xl font-black text-white">$ <span id="current-selection-total" class="text-blue-500">0</span></p>
                     </div>
                     <button onclick="addAccountToOrder()" class="btn-shine w-full sm:w-auto bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white font-black py-5 px-10 rounded-2xl shadow-[0_0_25px_rgba(168,85,247,0.4)] transition-all transform flex items-center justify-center gap-3 text-lg uppercase relative z-10">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -437,18 +437,18 @@
                 <div class="pt-6 border-t border-slate-800">
                     <div class="flex justify-between items-center mb-2 px-2">
                         <span class="text-slate-400 font-bold uppercase text-xs tracking-widest">Subtotal</span>
-                        <span class="text-xl font-bold text-slate-300">C$ <span id="cart-subtotal">0</span></span>
+                        <span class="text-xl font-bold text-slate-300">$ <span id="cart-subtotal">0</span></span>
                     </div>
                     
                     <!-- Contenedor Dinámico de Descuento -->
                     <div id="discount-container" class="hidden justify-between items-center mb-3 px-2">
                         <span id="discount-label" class="text-emerald-400 font-bold uppercase text-[10px] tracking-widest bg-emerald-900/30 px-2 py-0.5 rounded border border-emerald-500/30">Descuento</span>
-                        <span class="text-xl font-bold text-emerald-400">- C$ <span id="cart-discount">0</span></span>
+                        <span class="text-xl font-bold text-emerald-400">- $ <span id="cart-discount">0</span></span>
                     </div>
 
                     <div class="flex justify-between items-center mb-6 px-2 border-t border-slate-700/50 pt-3">
                         <span class="text-blue-400 font-black uppercase text-sm tracking-widest">Total a Pagar</span>
-                        <span class="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">C$ <span id="global-total" class="text-blue-400">0</span></span>
+                        <span class="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">$ <span id="global-total" class="text-blue-400">0</span></span>
                     </div>
 
                     <p class="text-[10px] text-center text-slate-500 uppercase tracking-widest mb-3">Tu solicitud será verificada vía WhatsApp</p>
@@ -526,20 +526,20 @@
         // --- CATÁLOGO DE PRODUCTOS ---
         const products = [
             // Diamantes
-            { id: 'd100', category: 'diamond', name: '100+10 Diamantes', price: 0.9, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/tdox1df38bo3tgsocxu6q/image_1772916122952.png?rlkey=b9mwpym9h1faemlm8bxewklfp&st=st1txhf0&raw=1' },
+            { id: 'd100', category: 'diamond', name: '100+10 Diamantes', price: 0.91, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/tdox1df38bo3tgsocxu6q/image_1772916122952.png?rlkey=b9mwpym9h1faemlm8bxewklfp&st=st1txhf0&raw=1' },
             { id: 'd310', category: 'diamond', name: '310+31 Diamantes', price: 2.85, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/ecgi09ijx7zs3elxwi7y4/image_1772916122952-1.png?rlkey=v297zoyo1vr7jf04sj14hhwlh&st=xuyea2vd&raw=1' },
-            { id: 'd520', category: 'diamond', name: '520+52 Diamantes', price: 4.5, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/nn9apv1k8yor5qz5po8s5/image_1772916122952-2.png?rlkey=7fjv3bhqibn2btdeqdw4113i4&st=mtoze6sz&raw=1' },
-            { id: 'd1060', category: 'diamond', name: '1,060+106 Diamantes', price: 9, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/mkls8ndz8ffgkzjvx64j8/image_1772916122952-4.png?rlkey=zozedza69urinjjkuqk16zr8f&st=lu5mi1v7&raw=1' },
-            { id: 'd2180', category: 'diamond', name: '2,180+218 Diamantes', price: 17, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/fvrtjxgwuvn3bv4xveclh/image_1772916122952-5.png?rlkey=455pcid1x6urd4czv5c9d75jf&st=gu07m28u&raw=1' },
-            { id: 'd5600', category: 'diamond', name: '5,600+516 Diamantes', price: 40, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/k44770iehaqw23f59z4a0/image_1772916122952-6.png?rlkey=gba9m1ttqvkcviuc63dked3ot&st=h4p9kui3&raw=1' },
+            { id: 'd520', category: 'diamond', name: '520+52 Diamantes', price: 4.29, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/nn9apv1k8yor5qz5po8s5/image_1772916122952-2.png?rlkey=7fjv3bhqibn2btdeqdw4113i4&st=mtoze6sz&raw=1' },
+            { id: 'd1060', category: 'diamond', name: '1,060+106 Diamantes', price: 8.08, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/mkls8ndz8ffgkzjvx64j8/image_1772916122952-4.png?rlkey=zozedza69urinjjkuqk16zr8f&st=lu5mi1v7&raw=1' },
+            { id: 'd2180', category: 'diamond', name: '2,180+218 Diamantes', price: 15.67, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/fvrtjxgwuvn3bv4xveclh/image_1772916122952-5.png?rlkey=455pcid1x6urd4czv5c9d75jf&st=gu07m28u&raw=1' },
+            { id: 'd5600', category: 'diamond', name: '5,600+560 Diamantes', price: 40.72, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/k44770iehaqw23f59z4a0/image_1772916122952-6.png?rlkey=gba9m1ttqvkcviuc63dked3ot&st=h4p9kui3&raw=1' },
             
             // Membresías
-            { id: 'msb', category: 'card', name: 'Semanal Básica', price: 25, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/ahq38o0mw6s2qqcvb6kti/image_1772916122952-8.png?rlkey=6267ei3elqqf47gt8vdjc6akb&st=tahnif9f&raw=1' },
-            { id: 'ms', category: 'card', name: 'Membresía Semanal', price: 75, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/x4ri4lon1sruytfu68ppt/image_1772916122952-9.png?rlkey=4ot5vjkekuy6v0tjs8bybl899&st=4qfj9vye&raw=1' },
-            { id: 'mm', category: 'card', name: 'Membresía Mensual', price: 365, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/ryb89djsol1a2vly7lxur/image_1772916122952-10.png?rlkey=6rbdtojsazf6d17qelpsrb234&st=pjigbc4v&raw=1' },
+            { id: 'msb', category: 'card', name: 'Semanal Básica', price: 0.65, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/ahq38o0mw6s2qqcvb6kti/image_1772916122952-8.png?rlkey=6267ei3elqqf47gt8vdjc6akb&st=tahnif9f&raw=1' },
+            { id: 'ms', category: 'card', name: 'Membresía Semanal', price: 1.9, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/x4ri4lon1sruytfu68ppt/image_1772916122952-9.png?rlkey=4ot5vjkekuy6v0tjs8bybl899&st=4qfj9vye&raw=1' },
+            { id: 'mm', category: 'card', name: 'Membresía Mensual', price: 9.23, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/ryb89djsol1a2vly7lxur/image_1772916122952-10.png?rlkey=6rbdtojsazf6d17qelpsrb234&st=pjigbc4v&raw=1' },
             
             // Pase
-            { id: 'pb', category: 'pass', name: 'Pase Booyahh', price: 50, color: '#f43f5e', image: 'https://www.dropbox.com/scl/fi/jkburejmve5ftohs9vupu/image_1772916122952-7.png?rlkey=bc7uvkx839min1rbik2e3xm06&st=wlaq1zof&raw=1' }
+            { id: 'pb', category: 'pass', name: 'Pase Booyahh', price: 1.25, color: '#f43f5e', image: 'https://www.dropbox.com/scl/fi/jkburejmve5ftohs9vupu/image_1772916122952-7.png?rlkey=bc7uvkx839min1rbik2e3xm06&st=wlaq1zof&raw=1' }
         ];
 
         let currentSelection = {}; 
@@ -830,9 +830,9 @@
                         <p class="text-blue-400 font-bold uppercase tracking-tighter text-base pr-16">${o.nameVal}</p>
                         <p class="text-[11px] font-mono text-slate-400 mb-2">ID: ${o.idVal}</p>
                         <div class="space-y-1 border-t border-slate-800/50 pt-2 mb-2">
-                            ${o.items.map(it => `<div class="text-[12px] text-slate-300 flex justify-between"><span>${it.qty}x ${it.product.name}</span><span class="font-bold">C$${it.lineTotal}</span></div>`).join('')}
+                            ${o.items.map(it => `<div class="text-[12px] text-slate-300 flex justify-between"><span>${it.qty}x ${it.product.name}</span><span class="font-bold">$${it.lineTotal}</span></div>`).join('')}
                         </div>
-                        <p class="text-right font-black text-white text-lg">C$ ${o.total}</p>
+                        <p class="text-right font-black text-white text-lg">$ ${o.total}</p>
                     </div>`;
             });
 
