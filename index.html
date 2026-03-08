@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astral Nexus Multiservicios - Free Fire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Black+Ops+One&display=swap');
+        
+        :root {
+            --primary-blue: #3b82f6;
+            --primary-violet: #a855f7;
+            --dark-bg: #050508;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        /* --- Fondo Interactivo Azul/Violeta --- */
+        #particles-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at bottom, #1e1b4b 0%, #050508 60%);
+            z-index: -2;
+            overflow: hidden;
+        }
+        .ember {
+            position: absolute;
+            bottom: -10px;
+            background: radial-gradient(circle, var(--primary-violet) 0%, var(--primary-blue) 50%, transparent 100%);
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) translateX(var(--drift)) scale(0.2); opacity: 0; }
+        }
+
+        .title-nexus { font-family: 'Black Ops One', cursive; }
+        .text-glitch {
+            position: relative;
+            display: inline-block;
+        }
+        .text-glitch::before, .text-glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+        .text-glitch::before {
+            left: 2px; text-shadow: -2px 0 #ff00c8;
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+        .text-glitch::after {
+            left: -2px; text-shadow: -2px 0 #00fff9;
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            100% { clip-path: inset(30% 0 40% 0); }
+        }
+
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; margin: 0; 
+        }
+
+        /* --- DISEÑO DE TARJETA DE PRODUCTO CON BORDES DINÁMICOS --- */
+        .gamer-card {
+            background: linear-gradient(145deg, rgba(15,15,25,0.9) 0%, rgba(5,5,10,0.95) 100%);
+            position: relative;
+            border-radius: 24px;
+            z-index: 1;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .gamer-card::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(60deg, transparent, var(--theme-color), transparent, var(--theme-color));
+            background-size: 300% 300%;
+            z-index: -1;
+            border-radius: 26px;
+            animation: animateBorder 4s ease infinite;
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+
+        .gamer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px var(--theme-color);
+        }
+        .gamer-card:hover::before {
+            opacity: 1;
+            animation-duration: 2s;
+        }
+
+        @keyframes animateBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Efecto del Precio */
+        .price-glitz {
+            background: linear-gradient(90deg, #ffffff, var(--theme-color), #ffffff);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            animation: shinePrice 3s linear infinite;
+        }
+        @keyframes shinePrice {
+            to { background-position: 200% center; }
+        }
+
+        .product-image-container {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.4) 100%);
+            border-radius: 16px;
+            margin-bottom: 15px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+
+        .product-image-container img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+            transition: transform 0.4s ease;
+        }
+        
+        .glass-panel {
+            background: rgba(10, 10, 20, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- BORDE ANIMADO PARA EL MODAL --- */
+        .modal-border-glow {
+            position: relative;
+            z-index: 1;
+        }
+        .modal-border-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(60deg, transparent, var(--primary-blue), transparent, var(--primary-violet));
+            background-size: 300% 300%;
+            z-index: -1;
+            border-radius: 26px; /* Ligeramente mayor al rounded-3xl (24px) */
+            animation: animateBorder 4s ease infinite;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* --- BOTONES Y PESTAÑAS ANIMADOS --- */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-20deg);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px rgba(59,130,246,0.4), 0 0 20px rgba(168,85,247,0.3); transform: scale(1); }
+            50% { box-shadow: 0 0 30px rgba(59,130,246,0.8), 0 0 40px rgba(168,85,247,0.6); transform: scale(1.02); }
+            100% { box-shadow: 0 0 15px rgba(59,130,246,0.4), 0 0 20px rgba(168,85,247,0.3); transform: scale(1); }
+        }
+        .btn-checkout-active {
+            animation: pulseGlow 2.5s infinite;
+            border: 1px solid rgba(168,85,247,0.5);
+        }
+
+        .category-tab {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .category-tab::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.4s;
+            z-index: -1;
+        }
+        .category-tab:hover::before { left: 100%; }
+        .category-tab.active {
+            background: linear-gradient(135deg, #3b82f6, #a855f7);
+            color: white;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.5);
+            transform: translateY(-2px);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050508; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+
+        .bar { width: 3px; height: 15px; background: #a855f7; margin: 0 1px; animation: bounce 0.8s infinite alternate; }
+        .bar:nth-child(2) { animation-delay: 0.2s; }
+        .bar:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { from { height: 4px; } to { height: 18px; } }
+    </style>
+</head>
+<body class="min-h-screen pb-10">
+
+    <div id="particles-bg"></div>
+
+    <!-- Modal para Visualizador de Imágenes -->
+    <div id="image-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/95 backdrop-blur-md transition-opacity opacity-0" onclick="closeModal(event)">
+        <button class="absolute top-6 right-6 sm:top-10 sm:right-10 text-white hover:text-red-500 bg-white/10 hover:bg-white/20 rounded-full p-2 transition-all shadow-2xl" onclick="closeModal(event)">
+            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <img id="modal-img" src="" class="max-w-[95vw] max-h-[85vh] object-contain drop-shadow-[0_0_40px_rgba(59,130,246,0.6)] transform scale-90 transition-transform duration-300" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- Nuevo Modal de Edición de Pedido -->
+    <div id="edit-modal" class="fixed inset-0 z-[110] hidden items-center justify-center bg-black/90 backdrop-blur-sm transition-opacity opacity-0" onclick="closeEditModal(event)">
+        <div id="edit-modal-content" class="glass-panel modal-border-glow w-11/12 max-w-lg max-h-[85vh] rounded-3xl border border-blue-500/50 flex flex-col overflow-hidden relative transform scale-95 transition-transform duration-300 shadow-[0_0_50px_rgba(59,130,246,0.3)]" onclick="event.stopPropagation()">
+            <!-- Header Modal -->
+            <div class="p-5 border-b border-blue-900/50 flex justify-between items-center bg-gradient-to-r from-blue-900/40 to-black">
+                <h3 class="text-xl font-bold text-white uppercase tracking-widest flex items-center gap-2">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    Editar Pedido
+                </h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-red-400 transition-colors"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            </div>
+            
+            <!-- Cuerpo Scrollable -->
+            <div class="p-5 overflow-y-auto space-y-4 flex-grow bg-black/40">
+                <div class="grid grid-cols-2 gap-4 mb-2">
+                    <div>
+                        <label class="text-blue-400 text-[10px] font-bold uppercase tracking-widest">ID numérico</label>
+                        <input type="number" id="edit-id" class="w-full bg-black/60 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-blue-500 focus:outline-none font-mono text-sm" oninput="validateId(this)">
+                    </div>
+                    <div>
+                        <label class="text-violet-400 text-[10px] font-bold uppercase tracking-widest">Nick</label>
+                        <input type="text" id="edit-name" class="w-full bg-black/60 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-violet-500 focus:outline-none text-sm">
+                    </div>
+                </div>
+                <div class="flex justify-between items-center border-b border-slate-800 pb-1 mb-2">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-widest">Paquetes Disponibles</span>
+                    <button onclick="clearEditProducts()" class="text-[10px] text-red-400 hover:text-red-300 font-bold uppercase tracking-widest flex items-center gap-1 transition-colors">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        Vaciar Todo
+                    </button>
+                </div>
+                <div id="edit-products-list" class="space-y-2">
+                    <!-- Productos se renderizan aquí por JS -->
+                </div>
+            </div>
+            
+            <!-- Footer Modal -->
+            <div class="p-5 border-t border-blue-900/50 bg-gradient-to-r from-black to-slate-900 flex justify-between items-center">
+                <div>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Subtotal de la cuenta</p>
+                    <p class="text-xl font-black text-blue-400">C$ <span id="edit-total">0</span></p>
+                </div>
+                <button onclick="saveEditOrder()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold uppercase tracking-wider text-sm transition-colors shadow-[0_0_15px_rgba(59,130,246,0.4)]">
+                    Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="relative pt-8 pb-6 px-4 text-center glass-panel border-b border-blue-600/30 shadow-2xl sticky top-0 z-40">
+        <!-- Control de Música -->
+        <div class="absolute top-4 right-4 flex items-center gap-3">
+            <div id="music-bars" class="hidden flex items-end h-5">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+            <button onclick="toggleMusic()" class="bg-black/60 border border-blue-500/50 p-2 rounded-full hover:bg-blue-600 transition-all text-white group">
+                <svg id="music-icon-play" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                <svg id="music-icon-pause" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hidden"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+
+        <div class="flex flex-col items-center justify-center gap-1">
+            <h1 class="title-nexus text-4xl sm:text-6xl text-white drop-shadow-[0_0_15px_rgba(59,130,246,0.6)]">ASTRAL NEXUS</h1>
+            <h2 class="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400 tracking-[0.3em] uppercase text-glitch" data-text="MULTISERVICIOS">MULTISERVICIOS</h2>
+        </div>
+        
+        <div class="flex items-center justify-center gap-4 mt-4">
+            <span class="bg-blue-900/40 px-4 py-1 rounded-full border border-blue-500/30 text-xs sm:text-sm font-bold text-blue-200 uppercase tracking-widest">SISTEMA DE PEDIDOS</span>
+            <span id="current-date" class="text-violet-400 text-xs sm:text-sm font-bold uppercase tracking-widest"></span>
+        </div>
+    </header>
+
+    <!-- INSTRUCCIONES Y PORTAL DE PINES -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Guía de Pedidos -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-blue-500/30 relative overflow-hidden flex flex-col justify-center">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/10 blur-3xl rounded-full"></div>
+                <h3 class="text-2xl font-black text-blue-400 mb-5 uppercase tracking-widest flex items-center gap-3">
+                    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    ¿Cómo pedir recargas?
+                </h3>
+                <ul class="space-y-4 text-base text-slate-300">
+                    <li class="flex items-start gap-3">
+                        <span class="bg-blue-600 shadow-[0_0_10px_#3b82f6] text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shrink-0">1</span> 
+                        <div>Ingresa el <b>ID numérico</b> y el <b>Nick (Nombre)</b> exacto de la cuenta a recargar.</div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="bg-blue-600 shadow-[0_0_10px_#3b82f6] text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shrink-0">2</span> 
+                        <div>Agrega la cantidad de los paquetes que necesitas y dale al botón <b>"Confirmar Cuenta"</b>. <span class="text-xs opacity-70">(Puedes añadir múltiples cuentas al carrito)</span></div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="bg-blue-600 shadow-[0_0_10px_#3b82f6] text-white w-7 h-7 rounded-full flex items-center justify-center font-bold shrink-0">3</span> 
+                        <div>Haz clic en procesar y envía el mensaje generado por <b>WhatsApp</b>.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Portal de Canje Pines -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-violet-500/40 bg-gradient-to-br from-violet-900/30 to-black relative overflow-hidden flex flex-col justify-center items-center text-center group cursor-pointer" onclick="window.open('https://astralnexusmultiservicios-dotcom.github.io/CANJE-DE-TARJETA-REGALOS-DE-PINES-FREE-FIRE/', '_blank')">
+                <div class="absolute inset-0 bg-violet-600/5 group-hover:bg-violet-600/20 transition-colors duration-500"></div>
+                <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-violet-500/20 blur-3xl rounded-full group-hover:bg-violet-500/40 transition-all"></div>
+                
+                <svg width="60" height="60" fill="none" stroke="#a855f7" stroke-width="1.5" class="mb-4 group-hover:scale-110 group-hover:-translate-y-2 transition-transform duration-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
+                    <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/>
+                    <line x1="2" y1="10" x2="22" y2="10"/>
+                    <path d="M12 15h.01"/>
+                </svg>
+                
+                <h3 class="text-3xl font-black text-white uppercase tracking-widest mb-2 group-hover:text-violet-300 transition-colors drop-shadow-md text-glitch" data-text="CANJEAR PINES FF">CANJEAR PINES FF</h3>
+                <p class="text-violet-200 text-sm mb-6 max-w-sm">¿Compraste una tarjeta de regalo? Entra a nuestro portal de canje automático para redimir tu código PIN.</p>
+                <button class="bg-violet-600 hover:bg-violet-500 text-white px-8 py-3 rounded-xl font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(168,85,247,0.6)] transition-all transform group-hover:scale-105">
+                    Ir al Portal de Canje ➔
+                </button>
+            </div>
+        </div>
+        
+        <!-- Alerta de Seguridad Global -->
+        <div class="mt-6 bg-red-900/20 border border-red-500/50 rounded-2xl p-4 flex items-center gap-4 text-red-200">
+            <svg width="30" height="30" fill="none" stroke="#ef4444" stroke-width="2" class="shrink-0 animate-pulse"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <p class="text-sm font-medium leading-relaxed">
+                <b class="uppercase tracking-widest text-red-400 block mb-1">Políticas de Validación de Pedido:</b>
+                Queda estrictamente prohibido alterar o modificar el mensaje de cobro autogenerado hacia WhatsApp. Nuestro equipo verifica minuciosamente que el total y los montos coincidan exactamente con nuestra base de datos antes de proceder a la entrega.
+            </p>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Formulario Izquierda -->
+        <div class="lg:col-span-8 space-y-6">
+            <div class="glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 relative">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-violet-500 to-blue-500 opacity-70"></div>
+                
+                <h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-white uppercase tracking-tighter">
+                    <span class="bg-blue-600 p-2 rounded-lg shadow-[0_0_15px_rgba(59,130,246,0.5)]"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z"/></svg></span>
+                    Identificación del Jugador
+                </h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                    <div class="space-y-2">
+                        <label class="text-blue-400 text-xs font-bold uppercase tracking-widest ml-1">ID numérico FF</label>
+                        <input type="number" id="player-id" placeholder="ID de la cuenta" class="w-full bg-black/40 border border-slate-700 rounded-2xl px-5 py-4 text-white text-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-mono tracking-widest transition-colors" oninput="validateId(this)">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-violet-400 text-xs font-bold uppercase tracking-widest ml-1">Nombre (Nickname)</label>
+                        <input type="text" id="player-name" placeholder="Ej: Astral_Master" class="w-full bg-black/40 border border-slate-700 rounded-2xl px-5 py-4 text-white text-xl focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors">
+                    </div>
+                </div>
+
+                <!-- Pestañas de Categoría -->
+                <div class="flex flex-wrap gap-2 mb-8 bg-black/30 p-1.5 rounded-2xl border border-slate-800">
+                    <button onclick="switchTab('diamond')" id="tab-diamond" class="category-tab active flex-1 py-3 px-4 rounded-xl font-bold text-sm uppercase tracking-wider">Diamantes</button>
+                    <button onclick="switchTab('card')" id="tab-card" class="category-tab flex-1 py-3 px-4 rounded-xl font-bold text-sm uppercase tracking-wider">Membresías</button>
+                    <button onclick="switchTab('pass')" id="tab-pass" class="category-tab flex-1 py-3 px-4 rounded-xl font-bold text-sm uppercase tracking-wider">Pases</button>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 mb-10" id="products-grid">
+                    <!-- Se genera por JS -->
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-900 to-black rounded-3xl p-6 border border-blue-900/30 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-inner relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"></div>
+                    <div class="text-center sm:text-left relative z-10">
+                        <p class="text-blue-300/60 text-xs font-bold uppercase tracking-widest mb-1">Subtotal de la Selección</p>
+                        <p class="text-4xl font-black text-white">C$ <span id="current-selection-total" class="text-blue-500">0</span></p>
+                    </div>
+                    <button onclick="addAccountToOrder()" class="btn-shine w-full sm:w-auto bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white font-black py-5 px-10 rounded-2xl shadow-[0_0_25px_rgba(168,85,247,0.4)] transition-all transform flex items-center justify-center gap-3 text-lg uppercase relative z-10">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Confirmar Cuenta
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carrito -->
+        <div class="lg:col-span-4 lg:sticky lg:top-36 space-y-4">
+            <div class="glass-panel rounded-3xl p-6 shadow-2xl border border-blue-800/20 flex flex-col min-h-[400px]">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3 text-white uppercase tracking-widest border-b border-slate-800 pb-4">
+                    <svg width="24" height="24" fill="none" stroke="#3b82f6" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                    Carrito de Pedido
+                </h2>
+
+                <div id="order-list" class="flex-grow overflow-y-auto space-y-4 mb-6 max-h-[50vh] pr-2"></div>
+
+                <div class="pt-6 border-t border-slate-800">
+                    <div class="flex justify-between items-center mb-2 px-2">
+                        <span class="text-slate-400 font-bold uppercase text-xs tracking-widest">Subtotal</span>
+                        <span class="text-xl font-bold text-slate-300">C$ <span id="cart-subtotal">0</span></span>
+                    </div>
+                    
+                    <!-- Contenedor Dinámico de Descuento -->
+                    <div id="discount-container" class="hidden justify-between items-center mb-3 px-2">
+                        <span id="discount-label" class="text-emerald-400 font-bold uppercase text-[10px] tracking-widest bg-emerald-900/30 px-2 py-0.5 rounded border border-emerald-500/30">Descuento</span>
+                        <span class="text-xl font-bold text-emerald-400">- C$ <span id="cart-discount">0</span></span>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-6 px-2 border-t border-slate-700/50 pt-3">
+                        <span class="text-blue-400 font-black uppercase text-sm tracking-widest">Total a Pagar</span>
+                        <span class="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">C$ <span id="global-total" class="text-blue-400">0</span></span>
+                    </div>
+
+                    <p class="text-[10px] text-center text-slate-500 uppercase tracking-widest mb-3">Tu solicitud será verificada vía WhatsApp</p>
+
+                    <button onclick="enviarPedidoFinal()" id="btn-checkout" class="w-full bg-slate-800 text-slate-500 font-black text-lg py-5 rounded-2xl transition-all flex items-center justify-center gap-3 border border-slate-700 cursor-not-allowed">
+                        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                        PROCESAR PEDIDO
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Audios -->
+    <audio id="bg-music" loop preload="auto"></audio>
+    <audio id="fx-add" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+
+    <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-full max-w-xs"></div>
+
+    <script>
+        // --- CONFIGURACIÓN DE AUDIO ---
+        const urlMusica = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3"; 
+        const music = document.getElementById('bg-music');
+        music.src = urlMusica;
+        let isPlaying = false;
+
+        function toggleMusic() {
+            const playIcon = document.getElementById('music-icon-play');
+            const pauseIcon = document.getElementById('music-icon-pause');
+            const bars = document.getElementById('music-bars');
+            if (!isPlaying) {
+                music.play().catch(e => console.log("Init required"));
+                playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); bars.classList.remove('hidden');
+                isPlaying = true;
+            } else {
+                music.pause();
+                playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); bars.classList.add('hidden');
+                isPlaying = false;
+            }
+        }
+
+        // --- SISTEMA DE MODAL PARA IMÁGENES ---
+        function openModal(src) {
+            const modal = document.getElementById('image-modal');
+            const img = document.getElementById('modal-img');
+            img.src = src;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // Timeout para permitir que la clase 'flex' se aplique antes de la transición de opacidad
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                img.classList.remove('scale-90');
+                img.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal(e) {
+            // Evitar que cierre si hacen clic en la imagen en sí
+            if (e && e.target.id === 'modal-img') return;
+            
+            const modal = document.getElementById('image-modal');
+            const img = document.getElementById('modal-img');
+            
+            modal.classList.add('opacity-0');
+            img.classList.remove('scale-100');
+            img.classList.add('scale-90');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                img.src = '';
+            }, 300);
+        }
+
+        // --- CATÁLOGO DE PRODUCTOS ---
+        const products = [
+            // Diamantes
+            { id: 'd100', category: 'diamond', name: '100+10 Diamantes', price: 0.9, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/tdox1df38bo3tgsocxu6q/image_1772916122952.png?rlkey=b9mwpym9h1faemlm8bxewklfp&st=st1txhf0&raw=1' },
+            { id: 'd310', category: 'diamond', name: '310+31 Diamantes', price: 2.85, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/ecgi09ijx7zs3elxwi7y4/image_1772916122952-1.png?rlkey=v297zoyo1vr7jf04sj14hhwlh&st=xuyea2vd&raw=1' },
+            { id: 'd520', category: 'diamond', name: '520+52 Diamantes', price: 4.5, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/nn9apv1k8yor5qz5po8s5/image_1772916122952-2.png?rlkey=7fjv3bhqibn2btdeqdw4113i4&st=mtoze6sz&raw=1' },
+            { id: 'd1060', category: 'diamond', name: '1,060+106 Diamantes', price: 9, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/mkls8ndz8ffgkzjvx64j8/image_1772916122952-4.png?rlkey=zozedza69urinjjkuqk16zr8f&st=lu5mi1v7&raw=1' },
+            { id: 'd2180', category: 'diamond', name: '2,180+218 Diamantes', price: 17, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/fvrtjxgwuvn3bv4xveclh/image_1772916122952-5.png?rlkey=455pcid1x6urd4czv5c9d75jf&st=gu07m28u&raw=1' },
+            { id: 'd5600', category: 'diamond', name: '5,600+516 Diamantes', price: 40, color: '#3b82f6', image: 'https://www.dropbox.com/scl/fi/k44770iehaqw23f59z4a0/image_1772916122952-6.png?rlkey=gba9m1ttqvkcviuc63dked3ot&st=h4p9kui3&raw=1' },
+            
+            // Membresías
+            { id: 'msb', category: 'card', name: 'Semanal Básica', price: 25, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/ahq38o0mw6s2qqcvb6kti/image_1772916122952-8.png?rlkey=6267ei3elqqf47gt8vdjc6akb&st=tahnif9f&raw=1' },
+            { id: 'ms', category: 'card', name: 'Membresía Semanal', price: 75, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/x4ri4lon1sruytfu68ppt/image_1772916122952-9.png?rlkey=4ot5vjkekuy6v0tjs8bybl899&st=4qfj9vye&raw=1' },
+            { id: 'mm', category: 'card', name: 'Membresía Mensual', price: 365, color: '#a855f7', image: 'https://www.dropbox.com/scl/fi/ryb89djsol1a2vly7lxur/image_1772916122952-10.png?rlkey=6rbdtojsazf6d17qelpsrb234&st=pjigbc4v&raw=1' },
+            
+            // Pase
+            { id: 'pb', category: 'pass', name: 'Pase Booyahh', price: 50, color: '#f43f5e', image: 'https://www.dropbox.com/scl/fi/jkburejmve5ftohs9vupu/image_1772916122952-7.png?rlkey=bc7uvkx839min1rbik2e3xm06&st=wlaq1zof&raw=1' }
+        ];
+
+        let currentSelection = {}; 
+        let globalOrders = []; 
+        let activeTab = 'diamond';
+        const whatsappNumber = "50581244993";
+
+        // --- VARIABLES DE EDICIÓN EN MODAL ---
+        let editingIndex = -1;
+        let tempEditSelection = {};
+
+        function initApp() {
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-NI', { 
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+            });
+            renderProducts();
+            createEmbers();
+        }
+
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+            
+            const filtered = products.filter(p => p.category === activeTab);
+            
+            filtered.forEach(p => {
+                if(currentSelection[p.id] === undefined) currentSelection[p.id] = 0;
+                
+                grid.innerHTML += `
+                    <div class="gamer-card p-5 flex flex-col justify-between animate-slide-up" style="--theme-color: ${p.color}">
+                        
+                        <!-- Contenedor con Lupa para Visualizador -->
+                        <div class="product-image-container cursor-pointer group" onclick="openModal('${p.image}')">
+                            <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/100?text=FF'">
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300 backdrop-blur-sm">
+                                <svg width="36" height="36" fill="none" stroke="white" stroke-width="2" class="transform scale-50 group-hover:scale-100 transition-transform duration-300"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Título y Precio Centrados con Efectos -->
+                        <div class="mb-5 text-center px-2">
+                            <h4 class="font-black text-slate-100 text-lg sm:text-xl mb-1 uppercase tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">${p.name}</h4>
+                            <p class="text-3xl font-black price-glitz" style="--theme-color: ${p.color}">$ ${p.price}</p>
+                        </div>
+
+                        <!-- Selector de Cantidad -->
+                        <div class="flex items-center justify-between bg-black/60 rounded-xl border border-white/10 p-1">
+                            <button onclick="updateQtyBtn('${p.id}', -1)" class="w-12 h-10 flex items-center justify-center bg-slate-800 text-white rounded-lg hover:bg-blue-600 transition-colors font-bold text-xl">-</button>
+                            <input type="number" id="qty-${p.id}" value="${currentSelection[p.id]}" min="0" oninput="setQtyDirect('${p.id}', this.value)" class="w-12 bg-transparent text-center text-white font-bold text-xl border-none focus:outline-none">
+                            <button onclick="updateQtyBtn('${p.id}', 1)" class="w-12 h-10 flex items-center justify-center bg-slate-800 text-white rounded-lg hover:bg-blue-600 transition-colors font-bold text-xl">+</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function updateQtyBtn(id, delta) { setQtyDirect(id, (currentSelection[id] || 0) + delta); }
+        function setQtyDirect(id, value) {
+            let num = Math.min(Math.max(parseInt(value) || 0, 0), 99);
+            currentSelection[id] = num;
+            const input = document.getElementById(`qty-${id}`);
+            if(input) input.value = num;
+            calculateSubtotal();
+        }
+
+        function calculateSubtotal() {
+            let subtotal = 0;
+            products.forEach(p => subtotal += (currentSelection[p.id] || 0) * p.price);
+            document.getElementById('current-selection-total').innerText = subtotal.toLocaleString();
+        }
+
+        function validateId(input) { input.value = input.value.replace(/[^0-9]/g, ''); }
+
+        function addAccountToOrder() {
+            const idVal = document.getElementById('player-id').value;
+            const nameVal = document.getElementById('player-name').value;
+            if (!idVal || !nameVal) return showToast("Faltan datos del jugador (ID y Nick)", true);
+
+            let items = products.filter(p => currentSelection[p.id] > 0).map(p => ({
+                product: p, qty: currentSelection[p.id], lineTotal: p.price * currentSelection[p.id]
+            }));
+
+            if (!items.length) return showToast("Selecciona al menos un paquete", true);
+
+            globalOrders.push({ idVal, nameVal, items, total: items.reduce((a, b) => a + b.lineTotal, 0) });
+            
+            // Sonido Gamer
+            document.getElementById('fx-add').currentTime = 0;
+            document.getElementById('fx-add').play();
+            
+            // Reset
+            document.getElementById('player-id').value = '';
+            document.getElementById('player-name').value = '';
+            products.forEach(p => currentSelection[p.id] = 0);
+            renderProducts();
+            calculateSubtotal();
+            
+            showToast("✅ Cuenta añadida al carrito exitosamente", false);
+            renderCart();
+        }
+
+        // --- SISTEMA DE CÁLCULO DE DESCUENTOS ---
+        function calculateCartTotals() {
+            let subtotal = 0;
+            let totalPackages = 0;
+            
+            globalOrders.forEach(o => {
+                subtotal += o.total;
+                o.items.forEach(it => {
+                    totalPackages += it.qty;
+                });
+            });
+
+            let discountPercent = 0;
+            
+            // Nueva regla: Basada exclusivamente en la cantidad de paquetes
+            if (totalPackages >= 75) {
+                discountPercent = 0.01; // 1%
+            } else if (totalPackages >= 50) {
+                discountPercent = 0.005; // 0.5%
+            } else if (totalPackages >= 25) {
+                discountPercent = 0.0025; // 0.25%
+            }
+
+            let discountAmount = Math.round(subtotal * discountPercent);
+            let finalTotal = subtotal - discountAmount;
+
+            return { subtotal, totalPackages, discountPercent, discountAmount, finalTotal };
+        }
+
+        function removeOrder(index) { globalOrders.splice(index, 1); renderCart(); }
+
+        // --- SISTEMA DE EDICIÓN EN MODAL (NUEVO) ---
+        function editOrder(index) {
+            editingIndex = index;
+            const o = globalOrders[index];
+            
+            document.getElementById('edit-id').value = o.idVal;
+            document.getElementById('edit-name').value = o.nameVal;
+            
+            // Iniciar selección temporal en 0 para todos los productos
+            products.forEach(p => tempEditSelection[p.id] = 0);
+            
+            // Cargar los productos que ya tenía en el carrito
+            o.items.forEach(it => tempEditSelection[it.product.id] = it.qty);
+            
+            renderEditProducts();
+            calculateEditTotal();
+            
+            // Mostrar Modal con animación
+            const modal = document.getElementById('edit-modal');
+            const content = document.getElementById('edit-modal-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeEditModal(e) {
+            // Evita cerrar si se clickea dentro del panel
+            if (e && e.target.id === 'edit-modal-content') return;
+            
+            const modal = document.getElementById('edit-modal');
+            const content = document.getElementById('edit-modal-content');
+            
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                editingIndex = -1;
+            }, 300);
+        }
+
+        function renderEditProducts() {
+            const list = document.getElementById('edit-products-list');
+            list.innerHTML = '';
+            
+            // Renderizamos todos los productos por si quiere agregar uno distinto al pedido actual
+            products.forEach(p => {
+                const qty = tempEditSelection[p.id] || 0;
+                list.innerHTML += `
+                    <div id="edit-item-container-${p.id}" class="flex items-center justify-between bg-black/40 p-2.5 rounded-xl border ${qty > 0 ? 'border-blue-500/60 bg-blue-900/20' : 'border-slate-800'} transition-colors">
+                        <div class="flex items-center gap-3">
+                            <img src="${p.image}" class="w-10 h-10 object-contain drop-shadow-md">
+                            <div>
+                                <p class="text-sm font-bold text-slate-200 leading-tight">${p.name}</p>
+                                <p class="text-xs text-blue-400 font-black">$ ${p.price}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center bg-black/60 rounded-lg p-1 border border-slate-700">
+                            <button onclick="updateEditQty('${p.id}', -1)" class="w-8 h-8 flex items-center justify-center bg-slate-800 text-white rounded hover:bg-blue-600 font-bold transition-colors">-</button>
+                            <input type="number" id="edit-qty-${p.id}" value="${qty}" min="0" oninput="setEditQtyDirect('${p.id}', this.value)" class="w-10 bg-transparent text-center text-white font-bold text-sm border-none focus:outline-none">
+                            <button onclick="updateEditQty('${p.id}', 1)" class="w-8 h-8 flex items-center justify-center bg-slate-800 text-white rounded hover:bg-blue-600 font-bold transition-colors">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateEditQty(id, delta) {
+            let num = Math.min(Math.max((tempEditSelection[id] || 0) + delta, 0), 99);
+            const input = document.getElementById(`edit-qty-${id}`);
+            if (input) input.value = num;
+            setEditQtyDirect(id, num);
+        }
+
+        function setEditQtyDirect(id, value) {
+            let num = Math.min(Math.max(parseInt(value) || 0, 0), 99);
+            tempEditSelection[id] = num;
+            
+            // Actualizar clases visuales sin re-renderizar todo para no perder el foco del teclado
+            const container = document.getElementById(`edit-item-container-${id}`);
+            if (container) {
+                if (num > 0) {
+                    container.classList.add('border-blue-500/60', 'bg-blue-900/20');
+                    container.classList.remove('border-slate-800');
+                } else {
+                    container.classList.remove('border-blue-500/60', 'bg-blue-900/20');
+                    container.classList.add('border-slate-800');
+                }
+            }
+            calculateEditTotal();
+        }
+
+        function clearEditProducts() {
+            products.forEach(p => tempEditSelection[p.id] = 0);
+            renderEditProducts();
+            calculateEditTotal();
+        }
+
+        function calculateEditTotal() {
+            let subtotal = 0;
+            products.forEach(p => subtotal += (tempEditSelection[p.id] || 0) * p.price);
+            document.getElementById('edit-total').innerText = subtotal.toLocaleString();
+        }
+
+        function saveEditOrder() {
+            const idVal = document.getElementById('edit-id').value;
+            const nameVal = document.getElementById('edit-name').value;
+            
+            if (!idVal || !nameVal) return showToast("Faltan datos de jugador (ID y Nick)", true);
+
+            let newItems = products.filter(p => tempEditSelection[p.id] > 0).map(p => ({
+                product: p, qty: tempEditSelection[p.id], lineTotal: p.price * tempEditSelection[p.id]
+            }));
+
+            if (!newItems.length) {
+                return showToast("Debes tener al menos un paquete para esta cuenta.", true);
+            }
+
+            // Sobreescribir la cuenta editada
+            globalOrders[editingIndex] = {
+                idVal, nameVal, items: newItems, total: newItems.reduce((a, b) => a + b.lineTotal, 0)
+            };
+            
+            renderCart();
+            closeEditModal();
+            showToast("✅ Pedido modificado con éxito", false);
+        }
+
+        function renderCart() {
+            const listEl = document.getElementById('order-list');
+            listEl.innerHTML = globalOrders.length ? '' : '<div class="text-center opacity-30 py-10"><p>No hay cuentas añadidas aún</p></div>';
+            
+            globalOrders.forEach((o, i) => {
+                listEl.innerHTML += `
+                    <div class="bg-blue-950/20 border border-blue-900/30 rounded-2xl p-4 animate-slide-up relative group">
+                        <div class="absolute top-2 right-2 flex gap-1">
+                            <button onclick="editOrder(${i})" class="text-slate-500 hover:text-blue-400 p-1.5 rounded-lg hover:bg-blue-900/30 transition-all" title="Editar Pedido">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </button>
+                            <button onclick="removeOrder(${i})" class="text-slate-600 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-900/30 transition-all" title="Eliminar Pedido">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <p class="text-blue-400 font-bold uppercase tracking-tighter text-base pr-16">${o.nameVal}</p>
+                        <p class="text-[11px] font-mono text-slate-400 mb-2">ID: ${o.idVal}</p>
+                        <div class="space-y-1 border-t border-slate-800/50 pt-2 mb-2">
+                            ${o.items.map(it => `<div class="text-[12px] text-slate-300 flex justify-between"><span>${it.qty}x ${it.product.name}</span><span class="font-bold">C$${it.lineTotal}</span></div>`).join('')}
+                        </div>
+                        <p class="text-right font-black text-white text-lg">C$ ${o.total}</p>
+                    </div>`;
+            });
+
+            const totals = calculateCartTotals();
+            
+            // Actualizar Subtotal
+            document.getElementById('cart-subtotal').innerText = totals.subtotal.toLocaleString();
+            
+            // Actualizar Descuento en la UI
+            const discountContainer = document.getElementById('discount-container');
+            if (totals.discountAmount > 0) {
+                discountContainer.classList.remove('hidden');
+                discountContainer.classList.add('flex');
+                document.getElementById('discount-label').innerText = `Descuento (${totals.discountPercent * 100}%) x${totals.totalPackages} paq.`;
+                document.getElementById('cart-discount').innerText = totals.discountAmount.toLocaleString();
+            } else {
+                discountContainer.classList.add('hidden');
+                discountContainer.classList.remove('flex');
+            }
+
+            // Actualizar Total Final
+            document.getElementById('global-total').innerText = totals.finalTotal.toLocaleString();
+            updateCheckoutButton(totals.finalTotal);
+        }
+
+        function updateCheckoutButton(total) {
+            const btn = document.getElementById('btn-checkout');
+            if (total > 0) {
+                btn.className = "btn-shine btn-checkout-active w-full bg-gradient-to-r from-blue-600 to-violet-600 text-white font-black text-lg py-5 rounded-2xl transition-all flex items-center justify-center gap-3 cursor-pointer relative z-10";
+                btn.innerHTML = `<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> PROCESAR PEDIDO`;
+                btn.disabled = false;
+            } else {
+                btn.className = "w-full bg-slate-800 text-slate-500 font-black text-lg py-5 rounded-2xl transition-all flex items-center justify-center gap-3 border border-slate-700 cursor-not-allowed";
+                btn.innerHTML = `<svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg> PROCESAR PEDIDO`;
+                btn.disabled = true;
+            }
+        }
+
+        function enviarPedidoFinal() {
+            if (!globalOrders.length) return;
+            
+            const btn = document.getElementById('btn-checkout');
+            const originalHTML = btn.innerHTML;
+            const totals = calculateCartTotals(); // Recalcular antes de enviar por seguridad
+            
+            // Animación de Carga Interactiva
+            btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> PREPARANDO WHATSAPP...`;
+            btn.classList.add('scale-[0.98]', 'opacity-90');
+            
+            setTimeout(() => {
+                let msg = `*ASTRAL NEXUS MULTISERVICIOS* 🚀\n━━━━━━━━━━━━━━━━━━━\n\n`;
+                globalOrders.forEach((o, i) => {
+                    msg += `👤 *CUENTA ${i + 1}*\n▪ ID: \`${o.idVal}\`\n▪ Nick: ${o.nameVal}\n`;
+                    o.items.forEach(it => msg += `  - ${it.qty}x ${it.product.name}\n`);
+                    msg += `\n`;
+                });
+                
+                msg += `━━━━━━━━━━━━━━━━━━━\n`;
+                
+                // Aplicar el bloque de descuento al texto de WhatsApp si existe
+                if (totals.discountAmount > 0) {
+                    msg += `📊 *Subtotal:* $ ${totals.subtotal.toLocaleString()}\n`;
+                    msg += `🎁 *Descuento Aplicado (${totals.discountPercent * 100}%):* -$ ${totals.discountAmount.toLocaleString()}\n`;
+                }
+                
+                msg += `💰 *TOTAL A PAGAR: $ ${totals.finalTotal.toLocaleString()}*\n\n_⚠️ El total y paquetes no deben ser modificados._`;
+                
+                window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+                
+                // Restaurar botón después de enviar
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('scale-[0.98]', 'opacity-90');
+                }, 1000);
+                
+            }, 800);
+        }
+
+        function showToast(m, err) {
+            const t = document.createElement('div');
+            t.className = `${err ? 'bg-red-600' : 'bg-blue-700'} text-white px-6 py-4 rounded-2xl shadow-2xl font-bold animate-slide-up text-center text-sm`;
+            t.innerText = m;
+            document.getElementById('toast-container').appendChild(t);
+            setTimeout(() => t.remove(), 4000);
+        }
+
+        function createEmbers() {
+            const container = document.getElementById('particles-bg');
+            for(let i=0; i<25; i++) {
+                let ember = document.createElement('div');
+                ember.className = 'ember';
+                let size = Math.random() * 4 + 2;
+                ember.style.width = size + 'px'; ember.style.height = size + 'px';
+                ember.style.left = Math.random() * 100 + 'vw';
+                ember.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                ember.style.animationDelay = (Math.random() * 5) + 's';
+                ember.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+                container.appendChild(ember);
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
